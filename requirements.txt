@@ -1,0 +1,8 @@
+kafka-python
+redis
+faker
+pandas
+scikit-learn
+xgboost
+fastapi
+uvicorn
