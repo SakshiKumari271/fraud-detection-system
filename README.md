@@ -1,144 +1,51 @@
-🛡️ FinShield — Real-Time AI Fraud Detection System
+# 🛡️ FinShield: Real-Time AI Fraud Detection System
 
-FinShield is a production-grade, real-time fraud detection pipeline designed to ingest, analyze, and flag suspicious financial transactions with sub-200ms latency.
-Built on a distributed microservices architecture, it combines streaming, in-memory state, and machine learning to detect fraud as it happens.
+**FinShield** is a production-grade, distributed pipeline designed to ingest, analyze, and flag fraudulent transactions in real-time. By leveraging a microservices architecture, the system achieves **sub-200ms latency** for AI-driven anomaly detection.
 
-🚀 Tech Stack
+![Python](https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python)
+![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-000?style=for-the-badge&logo=apachekafka&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![XGBoost](https://img.shields.io/badge/XGBoost-fb722e?style=for-the-badge&logo=xgboost&logoColor=white)
 
+---
 
+## 🏗️ System Architecture
 
+FinShield is built as a series of decoupled microservices to ensure high availability and scalability:
 
+1.  **Transaction Producer:** A simulation engine generating a continuous stream of financial events (Amount, User ID, Merchant, Location).
+2.  **Apache Kafka (The Backbone):** Manages two data streams:
+    -   `transactions`: Raw data from the producer.
+    -   `fraud-alerts`: AI-processed conclusions sent to the dashboard.
+3.  **Redis Feature Store:** Maintains real-time "state." It tracks **Transaction Velocity** (how many times a user has spent money in the last 60 seconds) with sub-millisecond lookup speeds.
+4.  **AI Processor:** A machine learning service that pulls from Kafka, fetches features from Redis, and uses an **XGBoost model** to predict fraud probability.
+5.  **FinShield Dashboard:** A professional **Streamlit** interface for live monitoring and instant security alerts.
 
+---
 
+## 🛠️ Technical Stack
 
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **Streaming** | Apache Kafka | Distributed event store and message broker |
+| **In-Memory DB** | Redis | Real-time feature storage and window counting |
+| **ML Model** | XGBoost | High-performance gradient boosting for classification |
+| **Dashboard** | Streamlit | Real-time web UI for security monitoring |
+| **Containerization** | Docker | Orchestration of Kafka, Zookeeper, and Redis |
 
+---
 
+## 📂 Project Structure
 
-🏗️ System Architecture
-
-FinShield follows a decoupled microservices architecture to ensure scalability, fault tolerance, and low latency.
-
-🔁 Data Flow Overview
-
-Transaction Producer
-
-Simulates real-time financial transactions
-
-Fields: User ID, Amount, Merchant, Location, Timestamp
-
-Apache Kafka (Event Backbone)
-
-transactions → raw incoming events
-
-fraud-alerts → AI-evaluated fraud decisions
-
-Redis Feature Store
-
-Maintains real-time state
-
-Tracks transaction velocity (number of transactions per user in last 60 seconds)
-
-AI Processor
-
-Consumes transactions from Kafka
-
-Fetches real-time features from Redis
-
-Uses an XGBoost model to predict fraud probability
-
-FinShield Dashboard
-
-Built with Streamlit + Plotly
-
-Live monitoring of transactions and fraud alerts
-
-🧠 Why This Architecture?
-
-Sub-200ms inference latency
-
-Stateful fraud detection (velocity attacks)
-
-Horizontally scalable services
-
-Production-ready streaming design
-
-🛠️ Technology Breakdown
-Component	Technology	Purpose
-Streaming	Apache Kafka	Distributed message broker
-Feature Store	Redis	In-memory, real-time feature tracking
-ML Model	XGBoost	High-performance fraud classification
-Dashboard	Streamlit	Live monitoring & alerts
-Infrastructure	Docker	Containerized services
-
-📂 Project Structure
+```text
 fraud-detection-system/
-├── docker-compose.yml    # Kafka, Zookeeper & Redis setup
-├── producer.py           # Simulates live transactions
-├── processor.py          # Kafka consumer + ML inference + Redis features
-├── dashboard.py          # Real-time monitoring UI
-├── train_model.py        # Train & save XGBoost fraud model
+├── docker-compose.yml    # Kafka, Zookeeper, & Redis configuration
+├── producer.py           # Generates live transaction stream
+├── processor.py          # AI Logic: Kafka Consumer + ML Inference + Redis Features
+├── dashboard.py          # Real-time UI: Kafka Consumer + Plotly Charts
+├── train_model.py        # Script to train and save the XGBoost model
 ├── requirements.txt      # Python dependencies
-└── README.md             # Project documentation
-
-⚙️ Full Setup & Configuration
-1️⃣ Clone the Repository
-git clone https://github.com/SakshiKumari271/fraud-detection-system.git
-cd fraud-detection-system
-
-2️⃣ Start Infrastructure (Docker)
-
-Make sure Docker Desktop is running.
-
-docker compose up -d
-
-
-⏳ Wait ~20 seconds for Kafka and Redis to fully initialize.
-
-3️⃣ Install Python Dependencies
-pip install -r requirements.txt
-
-4️⃣ Train the AI Model
-
-Generate synthetic historical data and train the fraud detection model:
-
-python train_model.py
-
-5️⃣ Run the FinShield Pipeline
-
-Open three terminals (VS Code recommended):
-
-🏦 Terminal 1 — Transaction Producer
-python producer.py
-
-🤖 Terminal 2 — AI Fraud Engine
-python processor.py
-
-📊 Terminal 3 — Dashboard
-streamlit run dashboard.py
-
-🚨 Key Features
-
-✅ Real-Time Fraud Detection
-Sub-200ms AI inference on every transaction
-
-✅ Stateful Analysis with Redis
-Detects velocity-based fraud patterns
-
-✅ Event-Driven Microservices
-Highly scalable and fault-tolerant design
-
-✅ Live Dashboard & Alerts
-Interactive Plotly charts with instant updates
-
-📈 Use Cases
-
-Banking fraud detection
-
-Payment gateway monitoring
-
-Credit card transaction analysis
-
-Real-time risk scoring systems
+└── README.md             # Documentation
 
 👩‍💻 Author & Contact
 
